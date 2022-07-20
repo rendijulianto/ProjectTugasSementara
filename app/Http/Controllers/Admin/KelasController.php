@@ -100,4 +100,11 @@ class KelasController extends Controller
         return view('admin.kelas.mataPelajaran', compact('kelas'));
     }
 
+    public function kelasSiswa($id_kelas)
+    {
+        $kelas = Kelas::findOrFail($id_kelas);
+        return view('admin.kelas.siswa', compact('kelas'));
+    }
+
+
 }

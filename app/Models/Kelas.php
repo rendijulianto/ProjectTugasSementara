@@ -40,6 +40,11 @@ class Kelas extends Model
     {
         return $this->hasMany('App\Models\MataPelajaranKelas', 'id_kelas');
     }
+
+    public function daftarSiswa()
+    {
+        return $this->hasMany('App\Models\KelasSiswa', 'id_kelas');
+    }
     
 
 }

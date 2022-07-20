@@ -19,6 +19,17 @@ class Siswa extends Model
         return $this->belongsTo('App\Models\Admin', 'id_admin');
     }
 
+    public function kelasSiswa()
+    {
+        return $this->hasOne('App\Models\KelasSiswa', 'id_siswa');
+    }
+
+
+    public function pengumpulan()
+    {
+        return $this->hasMany('App\Models\PengumpulanTugas', 'id_siswa');
+    }
+
   
     public function scopeSearch($query, $search='') {
         if ($search != '') {
@@ -27,9 +38,12 @@ class Siswa extends Model
             ->orWhere('jenis_kelamin', 'like', '%'.$search.'%');
         }
     }
+    
     public function scopeJenisKelamin($query, $jenis_kelamin='') {
         if($jenis_kelamin != '') {
             return $query->where('jenis_kelamin', $jenis_kelamin);
         }
     }
+
+
 }

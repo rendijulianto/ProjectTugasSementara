@@ -1,20 +1,19 @@
 @extends('layouts.main')
-@section('title','Kelas Mata Pelajaran ')
+@section('title','Kelas Siswa ')
 @section('content')
-<h1 class="h2">Daftar Kelas Mata Pelajaran </h1>
+<h1 class="h2">Daftar Kelas Siswa </h1>
 <div class="card border-left-3 border-left-danger card-2by1">
     <div class="card-body">
       <div class="media align-items-center">
         <div class="media-body">
-          <p>Daftar Mata Pelajaran Kelas Mata Pelajaran </p>
+          <p>Daftar Kelas Siswa </p>
            <b>
             {{$kelas->nama}} - {{$kelas->tahun_ajaran}}
            </b>
         </div>
         <div class="media-right">
-          <a href="{{route('admin.mataPelajaranKelas.create', ['id' => $kelas->id_kelas])}}" class="btn btn-success float-right">
-            <i class="fa fa-plus"> </i>  Mata Pelajaran
-            Kelas 
+          <a href="{{route('admin.kelasSiswa.create', ['id' => $kelas->id_kelas])}}" class="btn btn-success float-right">
+            <i class="fa fa-user-plus"> </i>  Siswa
           </a>
         </div>
       </div>
@@ -48,22 +47,23 @@
   <table class="table mb-0">
     <thead class="thead-light">
       <tr>
-        <th>Mata Pelajaran</th>
-        <th>Guru</th>
+        <th>Nis</th>
+        <th>Nama</th>
         <th>Aksi</th>
       </tr>
     </thead>
     <tbody class="list">
-        @foreach ($kelas->mataPelajaran()->get() as $mp)
+        @foreach ($kelas->daftarSiswa()->get() as $sw)
+       
       <tr>
         <td>
-            {{$mp->mapel->nama}}
+            {{$sw->siswa->nis}}
         </td>
         <td>
-            {{$mp->guru->nama}}
+            {{$sw->siswa->nama}}
         </td>
         <td>
-            <form action="{{route('admin.mataPelajaranKelas.destory', ['id_kelas' => $kelas->id_kelas, 'id_mapel' => $mp->id_mapel])}}" method="POST" class="d-inline" onclick="return confirm('Apakah yakin akan menghapus {{$mp->mapel->nama}} ?')">
+            <form action="{{route('admin.kelasSiswa.destory', ['id_kelas' => $kelas->id_kelas, 'id_siswa' => $sw->id_siswa])}}" method="POST" class="d-inline" onclick="return confirm('Apakah yakin akan menghapus {{$sw->siswa->nama}} ?')">
                 @csrf
                 @method('DELETE')
                 <button class="btn btn-sm btn-danger">
@@ -76,6 +76,5 @@
     @endforeach
     </tbody>
   </table>
-  
 </div>
 @endsection

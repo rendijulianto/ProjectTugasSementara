@@ -17,11 +17,23 @@ class MataPelajaranKelas extends Model
     {
         return $this->belongsTo('App\Models\MataPelajaran', 'id_mapel');
     }
+    
+    public function materi()
+    {
+        return $this->hasMany('App\Models\Materi', 'id_jadwal');
+    }
+    
+
+    public function tugas()
+    {
+        return $this->hasMany('App\Models\Tugas', 'id_jadwal');
+    }
 
     public function guru()
     {
         return $this->belongsTo('App\Models\Guru', 'id_guru');
     }
+
     public function kelas()
     {
         return $this->belongsTo('App\Models\Kelas', 'id_kelas');

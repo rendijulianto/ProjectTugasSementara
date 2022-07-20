@@ -19,6 +19,11 @@ class Guru extends Model
         return $this->belongsTo('App\Models\Admin', 'id_admin');
     }
 
+    public function mataPelajaranKelas()
+    {
+        return $this->hasMany('App\Models\MataPelajaranKelas', 'id_guru');
+    }
+
 
 
     public function scopeSearch($query, $search='') {

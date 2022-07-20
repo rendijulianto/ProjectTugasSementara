@@ -36,6 +36,12 @@ Route::group(['middleware' => ['web'], 'prefix' => 'admin', 'namespace' => 'Admi
     Route::get('/kelasDetailMataPelajaran/create/{id}', 'MataPelajaranKelasController@create')->name('admin.mataPelajaranKelas.create');
     Route::post('/kelasDetailMataPelajaran/create/{id}', 'MataPelajaranKelasController@store')->name('admin.mataPelajaranKelas.store');
     Route::delete('/mataPelajaranKelas/{id_kelas}/{id_mapel}', 'MataPelajaranKelasController@destroy')->name('admin.mataPelajaranKelas.destory');
+  
+    Route::get('/kelasSiswa/{id_kelas}', 'KelasController@kelasSiswa')->name('admin.kelas.kelasSiswa');
+    Route::get('/kelasSiswa/create/{id}', 'KelasSiswaController@create')->name('admin.kelasSiswa.create');
+    Route::post('/kelasSiswa/create/{id}', 'KelasSiswaController@store')->name('admin.kelasSiswa.store');
+    Route::delete('/kelasSiswa/{id_kelas}/{id_siswa}', 'KelasSiswaController@destroy')->name('admin.kelasSiswa.destory');
+ 
     Route::resource('mataPelajaran', 'MataPelajaranController', ['as' => 'admin']);
     Route::get('/mataPelajaranDetailGuru/{mataPelajaran}', 'MataPelajaranController@mataPelajaranDetail')->name('admin.mataPelajaranDetail');
     Route::get('/mataPelajaranGuru/create/{id}', 'MataPelajaranGuruController@create')->name('admin.mataPelajaranGuru.create');
@@ -43,5 +49,28 @@ Route::group(['middleware' => ['web'], 'prefix' => 'admin', 'namespace' => 'Admi
     Route::delete('/mataPelajaranGuru/{id_guru}/{id_mapel}', 'MataPelajaranGuruController@destroy')->name('admin.mataPelajaranGuru.destroy');
 });
 
+Route::group(['middleware' => ['web'], 'prefix' => 'guru', 'namespace' => 'Guru'], function () {
+    Route::get('/', 'DashboardController@index')->name('guru.dashboard');
+    Route::get('/materi/jadwal/{id_jadwal}', 'MateriController@index')->name('guru.materi.index');
+    Route::get('/materi/jadwal/{id_jadwal}/create', 'MateriController@create')->name('guru.materi.create');
+    Route::post('/materi/jadwal/{id_jadwal}/create', 'MateriController@store')->name('guru.materi.store');
+    Route::delete('/materi/jadwal/{id_materi}', 'MateriController@destroy')->name('guru.materi.destroy');
+    Route::get('/materi/detail/{id_materi}', 'MateriController@show')->name('guru.materi.show');
+    //Materi 
+    Route::get('/tugas/jadwal/{id_jadwal}', 'TugasController@index')->name('guru.tugas.index');
+    Route::get('/tugas/jadwal/{id_jadwal}/create', 'TugasController@create')->name('guru.tugas.create');
+    Route::post('/tugas/jadwal/{id_jadwal}/create', 'TugasController@store')->name('guru.tugas.store');
+    Route::delete('/tugas/jadwal/{id_tugas}', 'TugasController@destroy')->name('guru.tugas.destroy');
+    Route::get('/tugas/detail/{id_tugas}', 'TugasController@show')->name('guru.tugas.show');
+   //Kelas
+    Route::get('/kelas/{id_jadwal}', 'KelasController@index')->name('guru.kelas.index');
+});
 
 
+
+Route::group(['middleware' => ['web'], 'prefix' => 'siswa', 'namespace' => 'Siswa'], function () {
+    Route::get('/', 'DashboardController@index')->name('siswa.dashboard');
+    Route::get('/tugas/{id_jadwal}', 'TugasController@index')->name('siswa.tugas.index');
+    Route::get('/tugas/detail/{id_jadwal}/{id_tugas}', 'TugasController@show')->name('siswa.tugas.show');
+    Route::post('/tugas/detail/{id_jadwal}/{id_tugas}', 'TugasController@store')->name('siswa.tugas.store');
+});

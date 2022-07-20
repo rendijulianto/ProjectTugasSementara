@@ -14,7 +14,7 @@
           href="{{route('admin.kelas.create')}}"
           class="btn btn-success float-right"
         >
-          <i class="fa fa-plus"> </i> Tambah Kelas
+          <i class="fa fa-plus"> </i>  Kelas
         </a>
       </div>
     </div>
@@ -138,7 +138,6 @@
     </thead>
     <tbody class="list">
         @foreach ($kelas as $kls)
-       
           <tr>
             <td>{{$kls->nama}}</td>
             <td>{{$kls->jurusan}}</td>
@@ -146,11 +145,11 @@
               {{$kls->tahun_ajaran}}
             </td>
             <td>
-               <a href="{{route('admin.kelas.show', ['kela' => $kls->id_kelas])}}" class="btn btn-sm btn-primary">
+               <a  data-toggle="tooltip" data-placement="top" title="Lihat Kelas" href="{{route('admin.kelas.show', ['kela' => $kls->id_kelas])}}" class="btn btn-sm btn-primary">
                 <i class="fa fa-eye"></i>
               </a>
               {{-- Form Delete --}}
-              <form action="{{route('admin.kelas.destroy', ['kela' => $kls->id_kelas])}}" method="POST" class="d-inline" onclick="return confirm('Apakah yakin akan menghapus {{$kls->nama}} ?')">
+              <form data-toggle="tooltip" data-placement="top" title="Hapus Kelas" action="{{route('admin.kelas.destroy', ['kela' => $kls->id_kelas])}}" method="POST" class="d-inline" onclick="return confirm('Apakah yakin akan menghapus {{$kls->nama}} ?')">
                 @csrf
                 @method('DELETE')
                 <button class="btn btn-sm btn-danger">
@@ -160,6 +159,9 @@
             </form>
               <a  data-toggle="tooltip" data-placement="top" title="Tambah Mata Pelajaran" href="{{route('admin.kelas.mataPelajaranKelas', ['id_kelas' => $kls->id_kelas])}}" class="btn btn-sm btn-success">
                 <i class="fa fa-plus-circle"></i>
+              </a>
+              <a  data-toggle="tooltip" data-placement="top" title="Tambah Siswa" href="{{route('admin.kelas.kelasSiswa', ['id_kelas' => $kls->id_kelas])}}" class="btn btn-sm btn-success">
+                <i class="fa fa-user-plus"></i>
               </a>
             </td>
           </tr>
