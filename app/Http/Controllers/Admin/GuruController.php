@@ -16,7 +16,7 @@ class GuruController extends Controller
    public function index(Request $request)
    {
        $keyword = $request->get('keyword');
-       $guru = Guru::search($keyword)->paginate(100);
+       $guru = Guru::search($keyword)->orderby('nip', 'desc')->paginate(100);
        return view('admin.guru.index', compact('guru'));
    }
 

@@ -128,11 +128,11 @@
                 @endif
             </td>
             <td>
-              <a href="{{route('admin.siswa.show', ['siswa' => $sw->id_siswa])}}" class="btn btn-sm btn-primary">
+              <a  data-toggle="tooltip" data-placement="top" title="Lihat Siswa" href="{{route('admin.siswa.show', ['siswa' => $sw->id_siswa])}}" class="btn btn-sm btn-primary">
                 <i class="fa fa-eye"></i>
               </a>
               {{-- Form Delete --}}
-                <form action="{{route('admin.siswa.destroy', ['siswa' => $sw->id_siswa])}}" method="POST" class="d-inline" onclick="return confirm('Apakah yakin akan menghapus {{$sw->nama}} ?')">
+                <form data-toggle="tooltip" data-placement="top" title="Hapus Siswa" action="{{route('admin.siswa.destroy', ['siswa' => $sw->id_siswa])}}" method="POST" class="d-inline" onclick="return confirm('Apakah yakin akan menghapus {{$sw->nama}} ?')">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-sm btn-danger">

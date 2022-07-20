@@ -40,6 +40,19 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'siswa' => [
+            'driver' => 'session',
+            'provider' => 'siswa',
+        ],
+        'guru' => [
+            'driver' => 'session',
+            'provider' => 'guru',
+        ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admin',
+        ],
+
     ],
 
     /*
@@ -64,6 +77,18 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+        'admin'  => [
+            'driver' => 'eloquent',
+            'model'  => App\Models\Admin::class,
+        ],
+        'guru'  => [
+            'driver' => 'eloquent',
+            'model'  => App\Models\Guru::class,
+        ],
+        'siswa'  => [
+            'driver' => 'eloquent',
+            'model'  => App\Models\Siswa::class,
+        ]
 
         // 'users' => [
         //     'driver' => 'database',

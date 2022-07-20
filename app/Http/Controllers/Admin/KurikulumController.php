@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Siswa;
-use App\Http\Requests\SiswaRequest;
-
-class SiswaController extends Controller
+use App\Models\Kurikulum;
+use App\Http\Requests\KurikulumRequest;
+use Auth;
+class KurikulumController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +17,8 @@ class SiswaController extends Controller
     public function index(Request $request)
     {
         $keyword = $request->get('keyword');
-        $jenis_kelamin = $request->get('jenis_kelamin');
-        $siswa = Siswa::search($keyword)->jenisKelamin($jenis_kelamin)->orderby('id_siswa', 'desc')->paginate(100);
-        return view('admin.siswa.index', compact('siswa'));
+        $kurikulum = Kurikulum::search($keyword)->paginate(100);
+        return view('admin.kurikulum.index', compact('kurikulum'));
     }
 
     /**
@@ -29,7 +28,7 @@ class SiswaController extends Controller
      */
     public function create()
     {
-        return view('admin.siswa.create');
+        return view('admin.kurikulum.create');
     }
 
     /**
@@ -38,13 +37,19 @@ class SiswaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(SiswaRequest $request)
+    public function store(Request $request)
     {
-        // Set Password Hash
-        $request->merge(['password' => bcrypt($request->password)]);
-        $request->merge(['id_admin' => '1']);
-        $siswa = Siswa::create($request->all());
-        return redirect()->route('admin.siswa.index')->with('success', 'Data berhasil ditambahkan');
+      
+        $request->validate([
+            'nama' => 'required|unique:kurikulum',
+        ],[
+            'nama.required' => 'Nama Kurikulum harus diisi!',
+            'nama.unique' => 'Nama Kurikulum sudah ada!',
+        ]);
+
+        $request->merge(['id_admin' => Auth::guard('admin')->user()->id_admin]);
+        Kurikulum::create($request->all());
+        return redirect()->route('admin.kurikulum.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     /**
@@ -55,8 +60,8 @@ class SiswaController extends Controller
      */
     public function show($id)
     {
-        $siswa = Siswa::findOrFail($id);
-        return view('admin.siswa.show', compact('siswa'));
+        $kurikulum = Kurikulum::findOrFail($id);
+        return view('admin.kurikulum.show', compact('kurikulum'));
     }
 
     /**
@@ -90,9 +95,8 @@ class SiswaController extends Controller
      */
     public function destroy($id)
     {
-        // Delete Siswa
-        $siswa = Siswa::findOrFail($id);
-        $siswa->delete();
-        return redirect()->route('admin.siswa.index')->with('success', 'Data berhasil dihapus');
+        $kurikulum = Kurikulum::findOrFail($id);
+        $kurikulum->delete();
+        return redirect()->route('admin.kurikulum.index')->with('success', 'Data berhasil dihapus');
     }
 }

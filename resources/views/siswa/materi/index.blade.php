@@ -1,12 +1,12 @@
 @extends('layouts.main')
-@section('title','Tugas Kelas')
+@section('title','Materi Kelas')
 @section('content')
-<h1 class="h2">Daftar Tugas</h1>
+<h1 class="h2">Daftar Materi</h1>
 <div class="card border-left-3 border-left-danger card-2by1">
     <div class="card-body">
       <div class="media align-items-center">
         <div class="media-body">
-          <p>Daftar Tugas <b>{{$kelas->mapel->nama}}</b></p>
+          <p>Daftar Materi <b>{{$kelas->mapel->nama}}</b></p>
           <p>Kelas : {{$kelas->kelas->nama}}</p>
         </div>
       </div>
@@ -32,20 +32,20 @@
         </tr>
       </thead>
       <tbody class="list">
-         @forelse ($tugas as $tg)
+         @forelse ($materi as $mt)
         
              <tr>
                 <td>
-                    {{$tg->judul}}
+                    {{$mt->judul}}
                 </td>
                 <td>
-                    {{$tg->tanggal_buat}}
+                    {{$mt->tanggal_buat}}
                 </td>
                 <td>
-                    {{$tg->tanggal_tutup}}
+                    {{$mt->tanggal_tutup}}
                 </td>
                 <td>
-                    <a href="{{route('siswa.tugas.show', ['id_jadwal' => $tg->id_jadwal, 'id_tugas' => $tg->id_tugas])}}" class="btn btn-primary btn-sm">
+                    <a href="{{route('siswa.materi.show', ['id_jadwal' => $mt->id_jadwal, 'id_materi' => $mt->id_materi])}}" class="btn btn-primary btn-sm">
                      <i class="fa fa-book-open mr-2"></i> Baca Sekarang
                     </a>
                 </td>

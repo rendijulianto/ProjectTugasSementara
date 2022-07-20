@@ -14,7 +14,8 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-
+    'DATE_START_REPORT' => env('DATE_START_REPORT'),
+    'DATE_END_REPORT' => env('DATE_END_REPORT'),
     /*
     |--------------------------------------------------------------------------
     | Application Environment

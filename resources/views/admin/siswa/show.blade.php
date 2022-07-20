@@ -27,6 +27,10 @@
               <option {{$siswa->jenis_kelamin  == "P" ? 'selected' :''}} value="P">Perempuan</option>
             </select>
           </div>
+          <div class="form-group col-lg-6">
+            <label class="form-label" for="inputNama">Admin :</label>
+            <input type="text" readonly class="form-control" value="{{$siswa->admin->username}}">
+          </div>
           <div class="col-12">
             {{-- Kembali --}}
             <a href="{{route('admin.siswa.index')}}" class="btn btn-primary">Kembali</a>

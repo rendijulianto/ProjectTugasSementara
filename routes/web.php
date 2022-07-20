@@ -18,20 +18,26 @@ use Illuminate\Support\Facades\Route;
 // });
 
 // Route Auth 
-Route::get('/guru/login', 'Auth\LoginController@guru')->name('guru.login');
-Route::get('/siswa/login', 'Auth\LoginController@siswa')->name('siswa.login');
-Route::get('/admin/login', 'Auth\LoginController@admin')->name('admin.login');
-Route::post('/guru/login', 'Auth\LoginController@guruLogin')->name('guru.login.submit');
-Route::post('/siswa/login', 'Auth\LoginController@siswaLogin')->name('siswa.login.submit');
-Route::post('/admin/login', 'Auth\LoginController@adminLogin')->name('admin.login.submit');
+Route::get('/', 'Auth\LoginController@siswa')->name('siswa.login');
+Route::post('/', 'Auth\LoginController@isSiswa')->name('isSiswa.login');
+Route::get('/admin/login', 'Auth\LoginController@admin')->name('auth.admin');
+Route::post('/admin/login', 'Auth\LoginController@isAdmin')->name('auth.isAdmin');
+Route::get('/guru/login', 'Auth\LoginController@guru')->name('auth.guru');
+Route::post('/guru/login', 'Auth\LoginController@isGuru')->name('auth.isGuru');
+
+
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
 // Route Group Admin with name space
 
-Route::group(['middleware' => ['web'], 'prefix' => 'admin', 'namespace' => 'Admin'], function () {
+Route::group(['middleware' => ['middleware' => 'auth:admin'], 'prefix' => 'admin', 'namespace' => 'Admin'], function () {
+    Route::get('/', 'DashboardController@index')->name('admin.dashboard');
+    Route::get('/laporan', 'LaporanController@index')->name('admin.laporan');
+    Route::post('/laporan', 'LaporanController@setRange')->name('admin.laporan.setRange');
     Route::resource('siswa', 'SiswaController', ['as' => 'admin']);
     Route::resource('guru', 'GuruController', ['as' => 'admin']);
     Route::resource('kelas', 'KelasController', ['as' => 'admin']);
+    Route::resource('kurikulum', 'KurikulumController', ['as' => 'admin']);
     Route::get('/kelasDetailMataPelajaran/{id_kelas}', 'KelasController@mataPelajaranKelas')->name('admin.kelas.mataPelajaranKelas');
     Route::get('/kelasDetailMataPelajaran/create/{id}', 'MataPelajaranKelasController@create')->name('admin.mataPelajaranKelas.create');
     Route::post('/kelasDetailMataPelajaran/create/{id}', 'MataPelajaranKelasController@store')->name('admin.mataPelajaranKelas.store');
@@ -49,7 +55,7 @@ Route::group(['middleware' => ['web'], 'prefix' => 'admin', 'namespace' => 'Admi
     Route::delete('/mataPelajaranGuru/{id_guru}/{id_mapel}', 'MataPelajaranGuruController@destroy')->name('admin.mataPelajaranGuru.destroy');
 });
 
-Route::group(['middleware' => ['web'], 'prefix' => 'guru', 'namespace' => 'Guru'], function () {
+Route::group(['middleware' => ['middleware' => 'auth:guru'], 'prefix' => 'guru', 'namespace' => 'Guru'], function () {
     Route::get('/', 'DashboardController@index')->name('guru.dashboard');
     Route::get('/materi/jadwal/{id_jadwal}', 'MateriController@index')->name('guru.materi.index');
     Route::get('/materi/jadwal/{id_jadwal}/create', 'MateriController@create')->name('guru.materi.create');
@@ -68,9 +74,11 @@ Route::group(['middleware' => ['web'], 'prefix' => 'guru', 'namespace' => 'Guru'
 
 
 
-Route::group(['middleware' => ['web'], 'prefix' => 'siswa', 'namespace' => 'Siswa'], function () {
+Route::group(['middleware' => ['middleware' => 'auth:siswa'], 'prefix' => 'siswa', 'namespace' => 'Siswa'], function () {
     Route::get('/', 'DashboardController@index')->name('siswa.dashboard');
     Route::get('/tugas/{id_jadwal}', 'TugasController@index')->name('siswa.tugas.index');
     Route::get('/tugas/detail/{id_jadwal}/{id_tugas}', 'TugasController@show')->name('siswa.tugas.show');
     Route::post('/tugas/detail/{id_jadwal}/{id_tugas}', 'TugasController@store')->name('siswa.tugas.store');
+    Route::get('/materi/{id_jadwal}', 'MateriController@index')->name('siswa.materi.index');
+    Route::get('/materi/detail/{id_jadwal}/{id_materi}', 'MateriController@show')->name('siswa.materi.show');
 });

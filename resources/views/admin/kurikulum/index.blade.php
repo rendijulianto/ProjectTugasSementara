@@ -1,20 +1,20 @@
 @extends('layouts.main')
-@section('title','Guru')
+@section('title','Kurikulum')
 @section('content')
-<h1 class="h2">Daftar Guru</h1>
+<h1 class="h2">Daftar Kurikulum</h1>
     
 <div class="card border-left-3 border-left-danger card-2by1">
   <div class="card-body">
     <div class="media align-items-center">
       <div class="media-body">
-        <p>Daftar Guru</p>
+        <p>Daftar Kurikulum</p>
       </div>
       <div class="media-right">
         <a
-          href="{{route('admin.guru.create')}}"
+          href="{{route('admin.kurikulum.create')}}"
           class="btn btn-success float-right"
         >
-          <i class="fa fa-plus"> </i> Tambah Guru
+          <i class="fa fa-plus"> </i> Tambah Kurikulum
         </a>
       </div>
     </div>
@@ -46,7 +46,7 @@
           <div class="card-header">
              <h3 class="card-title">
                 <i class="fa fa-search"></i>
-                Cari Guru
+                Cari Kurikulum
              </h3>
           </div>
           <div class="card-body">
@@ -58,8 +58,8 @@
                    class="form-control"
                    value="{{Request::get('keyword')}}"
                    name="keyword"
-                   placeholder="Cari Guru"
-                   aria-label="Cari Guru"
+                   placeholder="Cari Kurikulum"
+                   aria-label="Cari Kurikulum"
                    aria-describedby="button-addon2"
                     />
                     <div class="input-group-append">
@@ -90,28 +90,24 @@
   <table class="table mb-0">
     <thead class="thead-light">
       <tr>
-        <th>ID</th>
+        
         <th>Nama</th>
-        <th>Alamat</th>
         <th>Aksi</th>
       </tr>
     </thead>
     <tbody class="list">
-        @foreach ($guru as $gr)
+        @forelse ($kurikulum as $ku)
           <tr>
-            <td>{{$gr->id_guru}}</td>
-            <td>{{$gr->nama}}
-              {!! $gr->nip != null ? '<br>NIP : '.$gr->nip : '' !!}
-            </td>
             <td>
-              {{$gr->alamat}}
+                {{$ku->nama}}
             </td>
+
             <td>
-              <a  data-toggle="tooltip" data-placement="top" title="Lihat Guru" href="{{route('admin.guru.show', ['guru' => $gr->id_guru])}}" class="btn btn-sm btn-primary">
+              <a  data-toggle="tooltip" data-placement="top" title="Lihat Kurikulum" href="{{route('admin.kurikulum.show', ['kurikulum' => $ku->id_kurikulum])}}" class="btn btn-sm btn-primary">
                 <i class="fa fa-eye"></i>
               </a>
               {{-- Form Delete --}}
-                <form  data-toggle="tooltip" data-placement="top" title="Hapus Guru" action="{{route('admin.guru.destroy', ['guru' => $gr->id_guru])}}" method="POST" class="d-inline" onclick="return confirm('Apakah yakin akan menghapus {{$gr->nama}} ?')">
+                <form  data-toggle="tooltip" data-placement="top" title="Hapus Kurikulum" action="{{route('admin.kurikulum.destroy', ['kurikulum' => $ku->id_kurikulum])}}" method="POST" class="d-inline" onclick="return confirm('Apakah yakin akan menghapus {{$ku->nama}} ?')">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-sm btn-danger">
@@ -120,18 +116,15 @@
                 </form>
             </td>
           </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="2" class="text-center">
+                <h4>Tidak ada data</h4>
+                </td>
+            </tr>
+        @endforelse
     </tbody>
   </table>
   
-</div>
-<div class="row">
-    <div class="col-12">
-       <div class="card">
-        <div class="card-body">
-            {{$guru->links('vendor.pagination.bootstrap-4')}}
-        </div>
-       </div>
-    </div>
 </div>
 @endsection

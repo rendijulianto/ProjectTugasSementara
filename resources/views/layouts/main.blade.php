@@ -40,7 +40,9 @@
 
     <!-- Preloader -->
     <link type="text/css" href="{{asset('assets/vendor/spinkit.css')}}" rel="stylesheet" />
-
+    <link type="text/css" href="{{asset('assets/css/flatpickr.css')}}" rel="stylesheet">
+   <link type="text/css" href="{{asset('assets/css/flatpickr-airbnb.css')}}" rel="stylesheet">
+   
     <!-- App CSS -->
     <link type="text/css" href="{{asset('assets/css/app.css')}}" rel="stylesheet" />
   </head>
@@ -90,9 +92,9 @@
                 <img
                   src="{{asset('assets/images/logo/white.svg')}}"
                   class="mr-2"
-                  alt="SMAN1"
+                  alt="LMS"
                 />
-                <span class="d-none d-xs-md-block">SMAN1</span>
+                <span class="d-none d-xs-md-block">LMS</span>
               </a>
 
               <!-- Search -->
@@ -120,13 +122,21 @@
                     href="#"
                     role="button"
                     ><img
-                      src="{{asset('assets/images/people/50/guy-6.jpg')}}"
+                     @if (Auth::guard('admin')->check())
+                      src="{{asset('assets/images/admin.png')}}"
+                     @elseif (Auth::guard('siswa')->check())
+                      src="{{asset('assets/images/siswa.png')}}"
+                      @elseif (Auth::guard('guru')->check())
+                      src="{{asset('assets/images/guru.png')}}"
+                      @else
+                      src="{{asset('assets/images/people/110/guy-6.jpg')}}"
+                     @endif
                       alt="Avatar"
                       class="rounded-circle"
                       width="40"
                   /></a>
                   <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="guest-login.html">
+                    <a class="dropdown-item" href="{{route('logout')}}">
                       <i class="material-icons">lock</i> Logout
                     </a>
                   </div>
@@ -175,7 +185,15 @@
                 class="sidebar sidebar-left sidebar-dark bg-dark o-hidden"
                 data-perfect-scrollbar
               >
-                <div class="sidebar-p-y"></div>
+                <div class="sidebar-p-y">
+                  @if(auth()->guard('siswa')->check())
+                    @include('layouts.menuSiswa')
+                  @elseif(auth()->guard('guru')->check())
+                    @include('layouts.menuGuru')
+                  @elseif(auth()->guard('admin')->check())
+                    @include('layouts.menuAdmin')
+                  @endif
+                </div>
               </div>
             </div>
           </div>
@@ -209,6 +227,9 @@
     <!-- List.js -->
     <script src="{{asset('assets/vendor/list.min.js')}}"></script>
     <script src="{{asset('assets/js/list.js')}}"></script>
+    <!-- Flatpickr -->
+   <script src="{{asset('assets/vendor/flatpickr/flatpickr.min.js')}}"></script>
+   <script src="{{asset('assets/js/flatpickr.js')}}"></script>
   </body>
 
  

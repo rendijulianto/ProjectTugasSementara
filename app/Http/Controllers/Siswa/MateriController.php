@@ -1,27 +1,32 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Siswa;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
-use App\Http\Requests\SiswaRequest;
 
-class SiswaController extends Controller
+class MateriController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index($id_jadwal)
     {
-        $keyword = $request->get('keyword');
-        $jenis_kelamin = $request->get('jenis_kelamin');
-        $siswa = Siswa::search($keyword)->jenisKelamin($jenis_kelamin)->orderby('id_siswa', 'desc')->paginate(100);
-        return view('admin.siswa.index', compact('siswa'));
+        $siswa = Siswa::find(2);
+    
+        $kelas = $siswa->kelasSiswa->kelas->mataPelajaran()->where('id_jadwal', $id_jadwal)->first();
+        
+        if(!$kelas) {
+            return redirect()->route('siswa.dashboard.index');
+        }
+        $materi = $kelas->materi;
+       
+       
+        return view('siswa.materi.index', compact('materi', 'kelas'));
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -29,7 +34,7 @@ class SiswaController extends Controller
      */
     public function create()
     {
-        return view('admin.siswa.create');
+        //
     }
 
     /**
@@ -38,13 +43,9 @@ class SiswaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(SiswaRequest $request)
+    public function store(Request $request)
     {
-        // Set Password Hash
-        $request->merge(['password' => bcrypt($request->password)]);
-        $request->merge(['id_admin' => '1']);
-        $siswa = Siswa::create($request->all());
-        return redirect()->route('admin.siswa.index')->with('success', 'Data berhasil ditambahkan');
+        //
     }
 
     /**
@@ -53,10 +54,21 @@ class SiswaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id_jadwal,$id_materi)
     {
-        $siswa = Siswa::findOrFail($id);
-        return view('admin.siswa.show', compact('siswa'));
+       $siswa = Siswa::find(2);
+       $kelas = $siswa->kelasSiswa->kelas->mataPelajaran->where('id_jadwal', $id_jadwal)->first();
+       if(!$kelas) {
+              return redirect()->route('siswa.materi.index', ['id_jadwal' => $id_jadwal]);
+       }
+        $materi = $kelas->materi->where('id_materi', $id_materi)->first();
+        if(!$materi) {
+            return redirect()->route('siswa.materi.index', ['id_jadwal' => $id_jadwal]);
+        }
+        if($materi->tanggal_tutup < date('Y-m-d H:i:s')) {
+            return redirect()->route('siswa.materi.index', ['id_jadwal' => $id_jadwal])->with('error', 'Materi sudah ditutup');
+        }
+        return view('siswa.materi.show', compact('materi', 'kelas'));
     }
 
     /**
@@ -90,9 +102,6 @@ class SiswaController extends Controller
      */
     public function destroy($id)
     {
-        // Delete Siswa
-        $siswa = Siswa::findOrFail($id);
-        $siswa->delete();
-        return redirect()->route('admin.siswa.index')->with('success', 'Data berhasil dihapus');
+        //
     }
 }

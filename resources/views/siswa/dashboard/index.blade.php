@@ -6,6 +6,23 @@
       <h1 class="h2">Dashboard </h1>
     </div>
 </div>
+@if(Session::has('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Success!</strong> {{Session::get('success')}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+@endif
+{{-- If Flash Error --}}    
+@if(Session::has('error'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error!</strong> {{Session::get('error')}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+@endif
 <div class="card-columns">
   @forelse ($mapel as $mp)
   <div class="card card-sm">
@@ -25,7 +42,7 @@
       </div>
     </div>
     <div class="card-footer text-center">
-      <a href="" class="btn btn-white btn-sm float-left"><i class="material-icons btn__icon--left">playlist_add_check</i>
+      <a href="{{route('siswa.materi.index', ['id_jadwal' => $mp->id_jadwal])}}" class="btn btn-white btn-sm float-left"><i class="material-icons btn__icon--left">playlist_add_check</i>
         Materi 
       <a href="{{route('siswa.tugas.index', ['id_jadwal'=> $mp->id_jadwal])}}" class="btn btn-white btn-sm float-right"><i class="material-icons btn__icon--left">playlist_add_check</i>
         Tugas <span class="badge badge-dark ml-2">{{number_format($mp->tugas()->whereDate('tanggal_tutup', '>=', Carbon\Carbon::now())->count())}}</span></a>
